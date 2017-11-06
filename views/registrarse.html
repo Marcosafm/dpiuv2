@@ -1,0 +1,140 @@
+{% extends "base2.html" %} {% block titulo %} Registrar usuario {% endblock %} {% block contenido_principal %}
+
+
+   {% block scripts %}  
+   
+   <script>
+   function checkPasswordMatch() {
+	    var password = $("#pwd1").val();
+	    var confirmPassword = $("#pwd2").val();
+	    
+	    var x = document.getElementById("txtPwd");
+	    if (password != confirmPassword) {
+	        x.style.display = "block";
+	    } else {
+	        x.style.display = "none";
+	    }
+	}
+
+	$(document).ready(function () {
+	   $("#pwd2").keyup(checkPasswordMatch);
+	});
+   
+   </script>
+   
+      <script>
+   function onSubmit(){
+	    var pwd1 = $('#pwd1').val();
+	    var pwd2 = $('#pwd2').val();
+	    
+	    var cont = false;
+	    
+		var dni = document.getElementById("dni").value;
+	  	var numero = dni.substr(0,dni.length-1);
+	  	var letra = dni.substr(dni.length-1,1);
+	  	  if(!isNaN(numero) && isNaN(letra) && numero.length == 8){
+	  		  document.getElementById("dniAl").style.display="none";
+	  		    if($("#gate").val() === 0 || $("#gate").val() === ''){
+	  			  document.getElementById("gateAl").style.display="block";
+	  		  	}else{
+	  			  document.getElementById("gateAl").style.display="none";
+	  		    	if($("#phone").val() < 99999999 || $("#phone").val() === ''){
+	  		    		document.getElementById("telef").style.display="block";
+		  		    }else{
+		  		    	document.getElementById("telef").style.display="none";
+		    		    if (pwd1  === pwd2) {
+		    		        cont = true;
+		    		    }
+		  		    }
+	  		  }
+	  	  }else{
+	  		  document.getElementById("dniAl").style.display="block";
+	  	   }
+	    return cont;
+
+   }
+   
+   </script>
+   
+   {% endblock %}
+   
+   
+   
+<form class="form-horizontal" method="post" action="/registrarse" onsubmit=" return onSubmit()">
+    <div class="form-group">
+        <label class="control-label col-sm-2">Nombre completo:</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="name" id="surname" placeholder="Apellidos" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="dni">DNI:</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" name="dni" id="dni" placeholder="12345678X" required>
+        </div>
+        <div class="alert alert-danger" id="dniAl" style="display:none;">
+			El formato de DNI no es el correcto (12345678X)
+		</div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="phone">Telefono:</label>
+        <div class="col-sm-8">
+            <input type="number" class="form-control" name="phone" id="phone" required>
+        </div>
+         <div class="alert alert-danger" id="telef" style="display:none;">
+			Introduzca un numero de telefono correcto
+		</div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="address">Direccion:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" name="street" id="street" placeholder="Calle" required>
+        </div>
+        <div class="col-sm-2">
+            <input type="number" class="form-control" name="gate" id="gate" placeholder="Portal" required>
+        </div>
+        <div class="alert alert-danger" id="gateAl" style="display:none;">
+			Introduzca un portal correcto
+		</div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="floor" id="floor" placeholder="Piso">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="email">Correo electronico:</label>
+        <div class="col-sm-8">
+            <input type="email" class="form-control" name="email" id="email" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="pwd1">Contrase&#241;a:</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" name="pwd1" id="pwd1" onChange="checkPasswordMatch();" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="pwd2">Confirma tu contrase&#241;a:</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" name="pwd2" id="pwd2" onChange="checkPasswordMatch();" required>
+        </div>
+    </div>
+        <div class="alert alert-danger col-sm-4" id="txtPwd" style="display:none;">
+			  Las contrase&#241;as no coinciden
+		</div>
+    <div class="form-group" >
+	<div class="col-sm-4 form-group" style="float:  right;">
+	            <button type="submit" class="btn btn-success">Registrarse</button>
+	        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "base.html" %} 
+
+{% block titulo %} Cuenta {% endblock %} 
+
+{% block scripts %}
+<script>
+   function onSubmit(){ 
+    var txt;
+    var r = confirm("Esta seguro de dar de baja su cuenta?");
+    if (r == true) {
+    	var w = confirm("Pero esta usted seguro?");
+    	if(w == true){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    } else {
+        return false;
+    }
+   }
+   
+   </script>
+    
+   <script>
+	jQuery(document).ready(function($) {
+	    $(".clickable-row").click(function() {
+	        window.location = $(this).data("href");
+	    });
+	    
+	    $(function(){
+    	  $("tr").each(function(){
+    	    var col_val = $(this).find("td:eq(2)").text();
+    	    if(!col_val.startsWith("Cantidad")){
+	    	    if (parseInt(col_val, 10) >= 1000){
+	    	      $(this).addClass('highlight'); 
+	    	    }
+    	    }
+    	  });
+    	});
+	});
+	</script>
+	
+	<script>
+function busqueda() {
+	  var input, filter, table, tr, td,td1,td2, i;
+	  input = document.getElementById("busqueda");
+	  filter = input.value.toUpperCase();
+	  table = document.getElementById("movimientos");
+	  tr = table.getElementsByTagName("tr");
+
+	  for (i = 0; i < tr.length; i++) {
+	    td = tr[i].getElementsByTagName("td")[0];
+	    td1 = tr[i].getElementsByTagName("td")[1];
+	    td2 = tr[i].getElementsByTagName("td")[2];
+	    if (td) {
+	      if (td.innerHTML.toUpperCase().indexOf(filter) > -1  || td2.innerHTML.toUpperCase().indexOf(filter) > -1) {
+	        tr[i].style.display = "";
+	      } else {
+	        tr[i].style.display = "none";
+	      }
+	    } 
+	  }
+	}
+</script>
+
+<style>
+   .highlight{
+    background-color:#ccff99;
+}
+
+</style>
+
+{% endblock %} 
+
+ {% block contenido_principal %}
+ 
+ <h2>Mis movimientos</h2>
+  <label>Filtro por IBAN de cuenta emisora o cantidad</label>
+ <div class="table-responsive">
+
+  <input type="text" id="busqueda" onkeyup="busqueda()" style="width:250px;" placeholder="Introduzca el IBAN o cantidad...">
+
+	<table class="table table-hover" id="movimientos">
+		<thead>
+			<tr>
+				<th>Cuenta emisora</th>
+				<th>Cuenta receptora</th>
+				<th>Cantidad (&#8364;)</th>
+				<th class="col-md-1"></th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+		{% for move in cuenta.moves %}
+				<td>{{ move.outputIBAN }}</td>
+				<td>{{ move.inputIBAN }}</td>
+				<td><b>{{ move.amount }}</b> </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<div>
+
+    <div class="col-sm-2"style="float:  right;">
+		<form method="post" action="/unsubscribe/{{cuenta._id.toString()}}" method="post" onsubmit="return onSubmit()">
+		    <button type="submit" name="Submit"class="btn btn-danger" > Dar de baja</button>
+		</form>
+	</div>
+	
+     <div class="col-sm-3" style="float:  right;">
+		 <form action="/account/{{cuenta._id.toString()}}/makeAMove" method="get">
+		    <button type="submit" class="btn btn-success" 
+		         name="Submit">Realizar un ingreso</button>
+		</form>
+	</div>
+</div>
+ {% endblock %} 

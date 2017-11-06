@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+ {% block titulo %} Modificar perfil {% endblock %} 
+ 
+   {% block scripts %}  
+   <script>
+      function onSubmit(){
+    	  var cont = false;
+	   	  if($("#gate").val() === 0 || $("#gate").val() === ''){
+	 			  document.getElementById("gateAl").style.display="block";
+	 		  	}else{
+	 			  document.getElementById("gateAl").style.display="none";
+	 		    	if($("#phone").val() < 99999999 || $("#phone").val() === ''){
+	 		    		document.getElementById("telef").style.display="block";
+		  		    }else{
+		  		    	document.getElementById("telef").style.display="none";
+		  		    	cont = true;
+		  		    }      
+	      }
+	   	  return cont;
+      }
+     </script>
+      
+   {% endblock %} 
+   
+ {% block contenido_principal %}
+
+<form class="form-horizontal" method="post" action="/modperfil" id="modificarPerfil" onsubmit=" return onSubmit()">
+    <div class="form-group">
+        <label class="control-label col-sm-2">Nombre completo:</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="name" id="name" value={{user.name}} required>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="name" id="surname" value={{user.surname}} required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="dni">DNI:</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" name="dni" id="dni" value={{user.dni}} readonly required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="phone">Telefono:</label>
+        <div class="col-sm-8">
+            <input type="number" class="form-control" name="phone" id="phone" value={{user.phone}}  required>
+        </div>
+         <div class="alert alert-danger" id="telef" style="display:none;">
+			Introduzca un numero de telefono correcto
+		</div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="address">Direccion:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" name="street" id="street" value={{user.street}}  required>
+        </div>
+        <div class="col-sm-2">
+            <input type="number" class="form-control" name="gate" id="gate" value={{user.gate}}  required>
+        </div>
+        <div class="alert alert-danger" id="gateAl" style="display:none;">
+			Introduzca un portal correcto
+		</div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="floor" id="floor" value={{user.floor}} r>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="email">Correo electronico:</label>
+        <div class="col-sm-8">
+            <input type="email" class="form-control" name="email" id="email" value={{user.email}}  required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="pwd1">Nueva contrase&#241;a:</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" name="pwd1" id="pwd1">
+        </div>
+    </div>
+
+    <div class="col-sm-4 form-group" style="float:  right;">
+            <button type="submit" class="btn btn-success" >Modificar</button>
+        </div>
+</form>
+{% endblock %}

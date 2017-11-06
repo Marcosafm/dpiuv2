@@ -1,0 +1,30 @@
+{
+  "name": "bancaonline",
+  "version": "1.0.0",
+  "description": "Primera entrega DPIU",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LlanezaAller/BancaOnline.git"
+  },
+  "author": "Iñigo Llaneza Aller, Marcos Abdel-Fattah Martínez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LlanezaAller/BancaOnline/issues"
+  },
+  "homepage": "https://github.com/LlanezaAller/BancaOnline#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-brute": "^1.0.1",
+    "express-brute-mongo": "^1.0.0",
+    "express-session": "^1.15.6",
+    "mongodb": "^2.2.33",
+    "swig": "^1.4.2"
+  }
+}

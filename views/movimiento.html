@@ -1,0 +1,74 @@
+{% extends "base.html" %} 
+
+{% block titulo %} Transferencia {% endblock %} 
+
+{% block scripts %}
+<script>
+   function onSubmit(){ 
+		var iban = document.getElementById("outputIBAN").value;
+	  	var pais = iban.substr(0,2);
+	  	var numero = iban.substr(2,iban.length);
+	  	
+	  	var cont = false;
+	  	if(pais == "ES" && numero.length == 22){
+	  		document.getElementById("ibanAl").style.display="none";
+	  		if($("#amount").val() == 0 || $("#amount").val() == ''){
+		  		document.getElementById("cantAl").style.display="block";
+	  		}
+	  		else{
+	  			document.getElementById("cantAl").style.display="none";
+	  			cont = true;
+	  		}
+	  	}else{
+	  		document.getElementById("ibanAl").style.display="block";
+	  	}
+	  	
+	  	document.getElementById("form").action = "/account/{{cuenta.IBAN}}/makeAMove";
+	  	return cont;
+   }
+   
+   </script>
+   
+
+{% endblock %} 
+
+ {% block contenido_principal %}
+ 
+ <form class="form-horizontal" method="post" id="form" onsubmit="return onSubmit()">
+    <div class="form-group">
+        <label class="control-label col-sm-2">Cuenta receptora:</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" name="inputIBAN" id="inputIBAN" value={{cuenta.IBAN}} required disabled>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Cuenta emisora:</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" name="outputIBAN" id="outputIBAN" required>
+        </div>
+        <div class="alert alert-danger" id="ibanAl" style="display:none;">
+			El formato del IBAN no es correcto (ES6621000418401234567891)
+		</div>
+    </div>
+    
+     <div class="form-group">
+        <label class="control-label col-sm-2">Cantidad:</label>
+        <div class="col-sm-8">
+            <input type="number" class="form-control" step="0,01" name="amount" id="amount" required>
+        </div>
+        <div class="alert alert-danger" id="cantAl" style="display:none;">
+			La cantidad introducida es incorrecta
+		</div>
+    </div>
+    
+    
+    <div class="form-group">
+		<div class="col-sm-4" style="float: right;">
+		            <button type="submit" class="btn btn-success">Realizar transferencia</button>
+        </div>
+    </div>
+ </form>
+ {% endblock %} 
+ 
